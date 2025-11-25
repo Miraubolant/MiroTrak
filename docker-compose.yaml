@@ -38,7 +38,7 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_ENV=production
-        - VITE_API_URL=VITE_API_URL=http://localhost:3333
+        - VITE_API_URL=http://backend:3333
     expose:
       - "80"
     depends_on:
