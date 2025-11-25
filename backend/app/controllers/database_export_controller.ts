@@ -241,12 +241,6 @@ export default class DatabaseExportController {
   async importJson({ request, response }: HttpContext) {
     try {
       const importData = request.body()
-      
-        hasData: !!importData.data,
-        clientsCount: importData.data?.clients?.length || 0,
-        promptsCount: importData.data?.prompts?.length || 0,
-        eventsCount: importData.data?.events?.length || 0
-      })
 
       if (!importData.data) {
         return response.badRequest({ message: 'Format de données invalide' })
