@@ -22,7 +22,8 @@
       "Bash(git branch:*)",
       "Bash(git push:*)",
       "Bash(git pull:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(ssh root@72.60.47.210 \"cd /data/coolify/services/xo404owk8ss0k0kgw0os8cww && docker compose exec backend node ace migration:run\")"
     ],
     "deny": [],
     "ask": []

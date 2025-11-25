@@ -9,10 +9,10 @@ export default class Client extends BaseModel {
   declare clientName: string
 
   @column()
-  declare contactPerson: string
+  declare contactPerson: string | null
 
   @column()
-  declare email: string
+  declare email: string | null
 
   @column()
   declare phone: string | null
