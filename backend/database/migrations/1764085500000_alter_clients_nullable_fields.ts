@@ -5,6 +5,7 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.alterTable(this.tableName, (table) => {
+      table.dropUnique(['email'])
       table.string('contact_person', 255).nullable().alter()
       table.string('email', 255).nullable().alter()
     })

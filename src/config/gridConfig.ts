@@ -222,14 +222,14 @@ export const columnDefs: ColDef[] = [
     headerName: 'Budget',
     field: 'budget',
     width: 120,
-    valueFormatter: (params) => `${params.value.toLocaleString()} €`,
+    valueFormatter: (params) => params.value != null ? `${params.value.toLocaleString()} €` : '0 €',
     filter: 'agNumberColumnFilter',
   },
   {
     headerName: 'Payé',
     field: 'paid',
     width: 120,
-    valueFormatter: (params) => `${params.value.toLocaleString()} €`,
+    valueFormatter: (params) => params.value != null ? `${params.value.toLocaleString()} €` : '0 €',
     filter: 'agNumberColumnFilter',
   },
   {
