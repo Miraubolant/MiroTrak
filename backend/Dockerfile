@@ -4,7 +4,7 @@ FROM node:20-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include=dev
 
 # Build the app
 FROM base AS builder
@@ -27,6 +27,12 @@ RUN echo "TZ=UTC" > .env && \
 
 RUN npm run build
 
+# Install production dependencies only
+FROM base AS prod-deps
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+
 # Production image
 FROM base AS runner
 WORKDIR /app
@@ -38,7 +44,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 adonisjs
 
 COPY --from=builder --chown=adonisjs:nodejs /app/build ./
-COPY --from=deps --chown=adonisjs:nodejs /app/node_modules ./node_modules
+COPY --from=prod-deps --chown=adonisjs:nodejs /app/node_modules ./node_modules
 
 USER adonisjs
 
