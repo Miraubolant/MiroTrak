@@ -1,7 +1,11 @@
 import axios from 'axios'
 import type { Client, Subscription, AiPhoto, Prompt } from '../types'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333'
+// En production, utilise le chemin relatif (proxé par Nginx)
+// En dev local, utilise localhost:3333
+const API_URL = import.meta.env.VITE_API_URL || (
+  import.meta.env.MODE === 'production' ? '' : 'http://localhost:3333'
+)
 
 const api = axios.create({
   baseURL: API_URL,
