@@ -41,7 +41,7 @@ export default class TemplatesController {
       const { type, name, content, enabled } = request.only(['type', 'name', 'content', 'enabled'])
 
       // Récupérer les templates existants
-      let templates = {}
+      let templates: Record<string, any> = {}
       try {
         const templatesSetting = await Setting.findByOrFail('key', 'pdf_templates')
         templates = JSON.parse(templatesSetting.value)
