@@ -24,6 +24,14 @@ router.get('/', async () => {
   }
 })
 
+// Health check endpoint
+router.get('/api/health', async () => {
+  return {
+    status: 'ok',
+    timestamp: new Date().toISOString()
+  }
+})
+
 // Routes pour les clients
 router.group(() => {
   router.get('/', [ClientsController, 'index'])
