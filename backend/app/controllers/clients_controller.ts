@@ -7,13 +7,10 @@ export default class ClientsController {
    */
   async index({ response }: HttpContext) {
     try {
-      console.log('ClientsController.index - Début')
       const clients = await Client.all()
-      console.log('ClientsController.index - Clients récupérés:', clients.length)
       return response.ok(clients)
     } catch (error) {
-      console.error('ClientsController.index - Erreur:', error)
-      return response.internalServerError({ message: 'Erreur lors de la récupération des clients', error: error.message })
+      return response.internalServerError({ message: 'Erreur lors de la récupération des clients' })
     }
   }
 
@@ -95,10 +92,8 @@ export default class ClientsController {
       const client = await Client.create(data)
       return response.created(client)
     } catch (error) {
-      console.error('ClientsController.store - Erreur:', error)
       return response.badRequest({
-        message: 'Erreur lors de la création du client',
-        error: error.message
+        message: 'Erreur lors de la création du client'
       })
     }
   }

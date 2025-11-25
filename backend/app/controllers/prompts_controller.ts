@@ -28,7 +28,7 @@ export default class PromptsController {
       const prompts = await query
       return response.ok(prompts)
     } catch (error) {
-      return response.internalServerError({ message: 'Erreur lors de la récupération des prompts', error })
+      return response.internalServerError({ message: 'Erreur lors de la récupération des prompts' })
     }
   }
 
@@ -53,8 +53,7 @@ export default class PromptsController {
       const prompt = await Prompt.create(data)
       return response.created(prompt)
     } catch (error) {
-      console.error('Error creating prompt:', error)
-      return response.badRequest({ message: 'Erreur lors de la création du prompt', error: error.messages || error.message })
+      return response.badRequest({ message: 'Erreur lors de la création du prompt' })
     }
   }
 
@@ -71,7 +70,7 @@ export default class PromptsController {
 
       return response.ok(prompt)
     } catch (error) {
-      return response.badRequest({ message: 'Erreur lors de la mise à jour du prompt', error: error.messages || error.message })
+      return response.badRequest({ message: 'Erreur lors de la mise à jour du prompt' })
     }
   }
 
@@ -97,10 +96,10 @@ export default class PromptsController {
         .distinct('category')
         .select('category')
         .orderBy('category', 'asc')
-      
+
       return response.ok(categories.map(c => c.category))
     } catch (error) {
-      return response.internalServerError({ message: 'Erreur lors de la récupération des catégories', error })
+      return response.internalServerError({ message: 'Erreur lors de la récupération des catégories' })
     }
   }
 }

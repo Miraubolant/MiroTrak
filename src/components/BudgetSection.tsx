@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { createGrid, GridOptions, GridApi, ColDef } from 'ag-grid-community'
 import type { Client, Subscription } from '../types'
+import { subscriptionsAPI } from '../services/api'
+import toast from 'react-hot-toast'
 
 interface BudgetSectionProps {
   clients: Client[]
@@ -25,44 +27,17 @@ function BudgetSection({ clients, isModalOpen, onOpenModal, onCloseModal }: Budg
     notes: ''
   })
 
-  // Charger les abonnements (pour l'instant données de démo)
+  // Charger les abonnements depuis l'API
   useEffect(() => {
-    // TODO: Remplacer par un vrai appel API
-    const demoSubscriptions: Subscription[] = [
-      {
-        id: 1,
-        clientId: 1,
-        clientName: 'TechCorp',
-        name: 'Hébergement Web',
-        cost: 29.99,
-        billingCycle: 'Mensuel',
-        status: 'Actif',
-        startDate: '2024-01-01',
-        notes: 'Plan Business OVH'
-      },
-      {
-        id: 2,
-        clientId: 1,
-        clientName: 'TechCorp',
-        name: 'Nom de domaine',
-        cost: 12.99,
-        billingCycle: 'Annuel',
-        status: 'Actif',
-        startDate: '2024-01-01',
-        endDate: '2025-01-01'
-      },
-      {
-        id: 3,
-        clientId: 2,
-        clientName: 'StartupXYZ',
-        name: 'Maintenance',
-        cost: 150.00,
-        billingCycle: 'Mensuel',
-        status: 'Actif',
-        startDate: '2024-02-15'
+    const fetchSubscriptions = async () => {
+      try {
+        const data = await subscriptionsAPI.getAll()
+        setSubscriptions(data)
+      } catch (error) {
+        toast.error('Erreur lors du chargement des abonnements')
       }
-    ]
-    setSubscriptions(demoSubscriptions)
+    }
+    fetchSubscriptions()
   }, [])
 
   const handleOpenModal = (subscription?: Subscription) => {
@@ -100,40 +75,48 @@ function BudgetSection({ clients, isModalOpen, onOpenModal, onCloseModal }: Budg
     return () => window.removeEventListener('keydown', handleEscape)
   }, [isModalOpen])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (editData) {
-      // Mode édition
-      const updatedSubscriptions = subscriptions.map(sub =>
-        sub.id === editData.id ? { ...formData, id: editData.id, clientName: clients.find(c => c.id === formData.clientId)?.clientName } : sub
-      )
-      setSubscriptions(updatedSubscriptions)
-      if (gridApiRef.current) {
-        gridApiRef.current.setGridOption('rowData', updatedSubscriptions)
+    try {
+      if (editData && editData.id) {
+        // Mode édition
+        const updatedSubscription = await subscriptionsAPI.update(editData.id, formData)
+        const updatedSubscriptions = subscriptions.map(sub =>
+          sub.id === editData.id ? updatedSubscription : sub
+        )
+        setSubscriptions(updatedSubscriptions)
+        if (gridApiRef.current) {
+          gridApiRef.current.setGridOption('rowData', updatedSubscriptions)
+        }
+        toast.success('Abonnement modifié avec succès')
+      } else {
+        // Mode ajout
+        const newSubscription = await subscriptionsAPI.create(formData)
+        const updatedSubscriptions = [...subscriptions, newSubscription]
+        setSubscriptions(updatedSubscriptions)
+        if (gridApiRef.current) {
+          gridApiRef.current.setGridOption('rowData', updatedSubscriptions)
+        }
+        toast.success('Abonnement créé avec succès')
       }
-    } else {
-      // Mode ajout
-      const newSubscription: Subscription = {
-        ...formData,
-        id: Date.now(),
-        clientName: clients.find(c => c.id === formData.clientId)?.clientName || ''
-      }
-      const updatedSubscriptions = [...subscriptions, newSubscription]
-      setSubscriptions(updatedSubscriptions)
-      if (gridApiRef.current) {
-        gridApiRef.current.setGridOption('rowData', updatedSubscriptions)
-      }
+      handleCloseModal()
+    } catch (error) {
+      toast.error('Erreur lors de l\'enregistrement de l\'abonnement')
     }
-
-    handleCloseModal()
   }
 
-  const handleDelete = (id: number) => {
-    const updatedSubscriptions = subscriptions.filter(sub => sub.id !== id)
-    setSubscriptions(updatedSubscriptions)
-    if (gridApiRef.current) {
-      gridApiRef.current.setGridOption('rowData', updatedSubscriptions)
+  const handleDelete = async (id: number) => {
+    try {
+      await subscriptionsAPI.delete(id)
+      const updatedSubscriptions = subscriptions.filter(sub => sub.id !== id)
+      setSubscriptions(updatedSubscriptions)
+      if (gridApiRef.current) {
+        gridApiRef.current.setGridOption('rowData', updatedSubscriptions)
+      }
+      toast.success('Abonnement supprimé avec succès')
+    } catch (error) {
+      toast.error('Erreur lors de la suppression de l\'abonnement')
     }
   }
 

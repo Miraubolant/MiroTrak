@@ -41,9 +41,8 @@ export default class DatabaseExportController {
       
       return response.send(JSON.stringify(exportData, null, 2))
     } catch (error) {
-      return response.internalServerError({ 
-        message: 'Erreur lors de l\'export de la base de données', 
-        error: error.message 
+      return response.internalServerError({
+        message: 'Erreur lors de l\'export de la base de données'
       })
     }
   }
@@ -117,9 +116,8 @@ export default class DatabaseExportController {
       
       return response.send('\uFEFF' + csv) // BOM pour Excel UTF-8
     } catch (error) {
-      return response.internalServerError({ 
-        message: 'Erreur lors de l\'export CSV', 
-        error: error.message 
+      return response.internalServerError({
+        message: 'Erreur lors de l\'export CSV'
       })
     }
   }
@@ -231,9 +229,8 @@ export default class DatabaseExportController {
       
       return response.send(buffer)
     } catch (error) {
-      return response.internalServerError({ 
-        message: 'Erreur lors de l\'export Excel', 
-        error: error.message 
+      return response.internalServerError({
+        message: 'Erreur lors de l\'export Excel'
       })
     }
   }
@@ -245,7 +242,6 @@ export default class DatabaseExportController {
     try {
       const importData = request.body()
       
-      console.log('Import - données reçues:', {
         hasData: !!importData.data,
         clientsCount: importData.data?.clients?.length || 0,
         promptsCount: importData.data?.prompts?.length || 0,
@@ -259,18 +255,15 @@ export default class DatabaseExportController {
       const trx = await db.transaction()
 
       try {
-        console.log('Import - Vidage des tables...')
         // VIDER les tables existantes (sauf settings qui est mis à jour)
         await trx.from('subscriptions').delete()
         await trx.from('events').delete()
         await trx.from('ai_photos').delete()
         await trx.from('prompts').delete()
         await trx.from('clients').delete()
-        console.log('Import - Tables vidées')
 
         // Import des clients (avec IDs originaux)
         if (importData.data.clients && Array.isArray(importData.data.clients)) {
-          console.log(`Import - Insertion de ${importData.data.clients.length} clients...`)
           for (const clientData of importData.data.clients) {
             // Convertir camelCase vers snake_case pour PostgreSQL
             const dataToInsert = {
@@ -298,21 +291,15 @@ export default class DatabaseExportController {
               deadline: clientData.deadline,
               attachments: JSON.stringify(clientData.attachments || []),
               todos: JSON.stringify(clientData.todos || []),
-              dev_password: clientData.devPassword,
-              github_repo: clientData.githubRepo,
-              supabase_url: clientData.supabaseUrl,
-              supabase_key: clientData.supabaseKey,
               created_at: clientData.createdAt,
               updated_at: clientData.updatedAt
             }
             await trx.table('clients').insert(dataToInsert)
           }
-          console.log('Import - Clients insérés')
         }
 
         // Import des photos IA (avec IDs originaux)
         if (importData.data.aiPhotos && Array.isArray(importData.data.aiPhotos)) {
-          console.log(`Import - Insertion de ${importData.data.aiPhotos.length} photos...`)
           for (const photoData of importData.data.aiPhotos) {
             const dataToInsert = {
               id: photoData.id,
@@ -325,12 +312,10 @@ export default class DatabaseExportController {
             }
             await trx.table('ai_photos').insert(dataToInsert)
           }
-          console.log('Import - Photos insérées')
         }
 
         // Import des abonnements (avec IDs originaux)
         if (importData.data.subscriptions && Array.isArray(importData.data.subscriptions)) {
-          console.log(`Import - Insertion de ${importData.data.subscriptions.length} abonnements...`)
           for (const subData of importData.data.subscriptions) {
             const dataToInsert = {
               id: subData.id,
@@ -349,12 +334,10 @@ export default class DatabaseExportController {
             }
             await trx.table('subscriptions').insert(dataToInsert)
           }
-          console.log('Import - Abonnements insérés')
         }
 
         // Import des événements (avec IDs originaux)
         if (importData.data.events && Array.isArray(importData.data.events)) {
-          console.log(`Import - Insertion de ${importData.data.events.length} événements...`)
           for (const eventData of importData.data.events) {
             const dataToInsert = {
               id: eventData.id,
@@ -372,12 +355,10 @@ export default class DatabaseExportController {
             }
             await trx.table('events').insert(dataToInsert)
           }
-          console.log('Import - Événements insérés')
         }
 
         // Import des prompts (avec IDs originaux)
         if (importData.data.prompts && Array.isArray(importData.data.prompts)) {
-          console.log(`Import - Insertion de ${importData.data.prompts.length} prompts...`)
           for (const promptData of importData.data.prompts) {
             const dataToInsert = {
               id: promptData.id,
@@ -389,12 +370,10 @@ export default class DatabaseExportController {
             }
             await trx.table('prompts').insert(dataToInsert)
           }
-          console.log('Import - Prompts insérés')
         }
 
         // Import des paramètres (mise à jour ou création)
         if (importData.data.settings && Array.isArray(importData.data.settings)) {
-          console.log(`Import - Traitement de ${importData.data.settings.length} paramètres...`)
           for (const settingData of importData.data.settings) {
             const existing = await trx.from('settings').where('key', settingData.key).first()
             const dataToInsert = {
@@ -417,7 +396,6 @@ export default class DatabaseExportController {
               await trx.table('settings').insert(dataToInsert)
             }
           }
-          console.log('Import - Paramètres traités')
         }
 
         // Réinitialiser les séquences d'auto-incrémentation
@@ -441,13 +419,13 @@ export default class DatabaseExportController {
 
         for (const seq of sequences) {
           if (seq.max > 0) {
-            await trx.raw(`SELECT setval('${seq.table}_id_seq', ${seq.max})`)
+            // Utiliser des paramètres pour éviter l'injection SQL
+            await trx.raw('SELECT setval(?, ?)', [`${seq.table}_id_seq`, seq.max])
           }
         }
 
         await trx.commit()
         
-        console.log('Import - Transaction validée avec succès')
 
         return response.ok({ 
           message: 'Import réussi',
@@ -465,9 +443,8 @@ export default class DatabaseExportController {
         throw error
       }
     } catch (error) {
-      return response.badRequest({ 
-        message: 'Erreur lors de l\'import', 
-        error: error.message 
+      return response.badRequest({
+        message: 'Erreur lors de l\'import'
       })
     }
   }
@@ -490,9 +467,8 @@ export default class DatabaseExportController {
         count: t.count?.$extras?.total || 0
       })))
     } catch (error) {
-      return response.internalServerError({ 
-        message: 'Erreur lors de la récupération des tables', 
-        error: error.message 
+      return response.internalServerError({
+        message: 'Erreur lors de la récupération des tables'
       })
     }
   }

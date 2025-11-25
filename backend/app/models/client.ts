@@ -94,18 +94,6 @@ export default class Client extends BaseModel {
   })
   declare todos: any[]
 
-  @column()
-  declare devPassword: string | null
-
-  @column()
-  declare githubRepo: string | null
-
-  @column()
-  declare supabaseUrl: string | null
-
-  @column()
-  declare supabaseKey: string | null
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

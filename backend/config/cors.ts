@@ -6,8 +6,17 @@ import { defineConfig } from '@adonisjs/cors'
 const corsConfig = defineConfig({
   enabled: true,
 
-  // Autoriser toutes les origines
-  origin: true,
+  // Restreindre aux domaines autorisés uniquement (sécurité production)
+  origin: (origin) => {
+    const allowedOrigins = [
+      'https://mirotrak.miraubolant.com',
+      // Autoriser localhost en développement
+      process.env.NODE_ENV !== 'production' ? 'http://localhost:5173' : null,
+      process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:5173' : null,
+    ].filter(Boolean)
+
+    return allowedOrigins.includes(origin || '') || origin === null
+  },
 
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH'],
   headers: true,

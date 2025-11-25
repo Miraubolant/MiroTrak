@@ -49,8 +49,7 @@ export default class AiPhotosController {
       const aiPhoto = await AiPhoto.create(cleanData)
       return response.created(aiPhoto)
     } catch (error) {
-      console.error('Error creating photo:', error)
-      return response.badRequest({ message: 'Erreur lors de la création de la photo', error: error.message })
+      return response.badRequest({ message: 'Erreur lors de la création de la photo' })
     }
   }
 
@@ -111,7 +110,6 @@ export default class AiPhotosController {
       await AiPhoto.query().whereIn('id', ids).delete()
       return response.ok({ message: 'Photos supprimées avec succès' })
     } catch (error) {
-      console.error('Error bulk deleting photos:', error)
       return response.internalServerError({ message: 'Erreur lors de la suppression des photos', error })
     }
   }
@@ -146,10 +144,8 @@ export default class AiPhotosController {
         photos: createdPhotos 
       })
     } catch (error) {
-      console.error('Error bulk creating photos:', error)
-      return response.badRequest({ 
-        message: 'Erreur lors de la création en masse des photos', 
-        error: error.message 
+      return response.badRequest({
+        message: 'Erreur lors de la création en masse des photos'
       })
     }
   }

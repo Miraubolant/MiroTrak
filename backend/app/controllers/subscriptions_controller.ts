@@ -18,7 +18,7 @@ export default class SubscriptionsController {
 
       return response.ok(subscriptionsWithClientName)
     } catch (error) {
-      return response.internalServerError({ message: 'Erreur lors de la récupération des abonnements', error })
+      return response.internalServerError({ message: 'Erreur lors de la récupération des abonnements' })
     }
   }
 
@@ -57,7 +57,7 @@ export default class SubscriptionsController {
 
       return response.ok(subscriptionsWithClientName)
     } catch (error) {
-      return response.internalServerError({ message: 'Erreur lors de la récupération des abonnements', error })
+      return response.internalServerError({ message: 'Erreur lors de la récupération des abonnements' })
     }
   }
 
@@ -88,7 +88,7 @@ export default class SubscriptionsController {
         clientName: client.clientName
       })
     } catch (error) {
-      return response.badRequest({ message: 'Erreur lors de la création de l\'abonnement', error })
+      return response.badRequest({ message: 'Erreur lors de la création de l\'abonnement' })
     }
   }
 

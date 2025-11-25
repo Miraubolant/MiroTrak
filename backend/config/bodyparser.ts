@@ -14,7 +14,7 @@ const bodyParserConfig = defineConfig({
   form: {
     convertEmptyStringsToNull: true,
     types: ['application/x-www-form-urlencoded'],
-    limit: '100mb',
+    limit: '1mb',
   },
 
   /**
@@ -28,7 +28,7 @@ const bodyParserConfig = defineConfig({
       'application/vnd.api+json',
       'application/csp-report',
     ],
-    limit: '100mb',
+    limit: '2mb',
   },
 
   /**
@@ -49,7 +49,7 @@ const bodyParserConfig = defineConfig({
      * Maximum limit of data to parse including all files
      * and fields
      */
-    limit: '100mb',
+    limit: '20mb',
     types: ['multipart/form-data'],
   },
 })

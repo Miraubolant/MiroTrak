@@ -7,13 +7,6 @@ const API_URL = import.meta.env.VITE_API_URL || (
   import.meta.env.MODE === 'production' ? '' : 'http://localhost:3333'
 )
 
-// Debug log pour vérifier l'URL API
-console.log('API Configuration:', {
-  VITE_API_URL: import.meta.env.VITE_API_URL,
-  MODE: import.meta.env.MODE,
-  API_URL: API_URL
-})
-
 const api = axios.create({
   baseURL: API_URL,
   headers: {
