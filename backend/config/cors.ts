@@ -17,6 +17,7 @@ const corsConfig = defineConfig({
       'http://127.0.0.1:5173',
       'http://127.0.0.1:3001',
       'http://xo404owk8ss0k0kgw0os8cww.72.60.47.210.sslip.io',
+      'http://nsgww8kwwg0o4k40ccwg8wok.72.60.47.210.sslip.io',
     ]
     return allowedOrigins.includes(origin || '') || origin === null
   },
