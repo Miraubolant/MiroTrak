@@ -8,8 +8,11 @@ services:
     expose:
       - "3333"
     environment:
+      - TZ=UTC
       - NODE_ENV=production
       - PORT=3333
+      - HOST=0.0.0.0
+      - LOG_LEVEL=info
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=postgres
