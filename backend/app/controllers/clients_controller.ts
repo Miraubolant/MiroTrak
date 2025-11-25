@@ -56,10 +56,50 @@ export default class ClientsController {
         'logo'
       ])
 
+      // Validation du nom client (obligatoire)
+      if (!data.clientName || data.clientName.trim() === '') {
+        return response.badRequest({
+          message: 'Le nom du client est obligatoire',
+          field: 'clientName'
+        })
+      }
+
+      // Vérifier si un client avec le même nom existe déjà
+      const existingClient = await Client.query()
+        .where('client_name', data.clientName)
+        .first()
+
+      if (existingClient) {
+        return response.conflict({
+          message: 'Un client avec ce nom existe déjà',
+          field: 'clientName',
+          existingClientId: existingClient.id
+        })
+      }
+
+      // Vérifier si l'email existe déjà (si fourni)
+      if (data.email && data.email.trim() !== '') {
+        const existingEmail = await Client.query()
+          .where('email', data.email)
+          .first()
+
+        if (existingEmail) {
+          return response.conflict({
+            message: 'Un client avec cet email existe déjà',
+            field: 'email',
+            existingClientId: existingEmail.id
+          })
+        }
+      }
+
       const client = await Client.create(data)
       return response.created(client)
     } catch (error) {
-      return response.badRequest({ message: 'Erreur lors de la création du client', error })
+      console.error('ClientsController.store - Erreur:', error)
+      return response.badRequest({
+        message: 'Erreur lors de la création du client',
+        error: error.message
+      })
     }
   }
 
