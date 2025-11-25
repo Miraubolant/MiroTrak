@@ -6,6 +6,9 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+# Build with updated API configuration (production mode)
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
 RUN npm run build
 
 # Production stage with nginx
