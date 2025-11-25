@@ -1,26 +1,31 @@
 import { defineConfig } from '@adonisjs/cors'
 
 /**
- * Configuration options to tweak the CORS policy. The following
- * options are documented on the official documentation website.
- *
- * https://docs.adonisjs.com/guides/security/cors
+ * Configuration CORS pour AdonisJS
  */
 const corsConfig = defineConfig({
   enabled: true,
-  // Permettre les requêtes depuis le frontend Vite
+  
   origin: (origin) => {
-    const allowedOrigins = [
-      'http://localhost:5173', // Vite dev server
+    // Autoriser les requêtes sans origin (ex: curl, Postman)
+    if (!origin) return true
+
+    // Autoriser tous les sous-domaines de sslip.io
+    if (origin.endsWith('.sslip.io')) return true
+
+    // Autoriser localhost avec différents ports
+    const allowedLocalhost = [
+      'http://localhost:5173',
       'http://localhost:3000',
-      'http://localhost:3001', // Vite alternative port
+      'http://localhost:3001',
       'http://127.0.0.1:5173',
+      'http://127.0.0.1:3000',
       'http://127.0.0.1:3001',
-      'http://xo404owk8ss0k0kgw0os8cww.72.60.47.210.sslip.io',
-      'http://nsgww8kwwg0o4k40ccwg8wok.72.60.47.210.sslip.io',
     ]
-    return allowedOrigins.includes(origin || '') || origin === null
+
+    return allowedLocalhost.includes(origin)
   },
+
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH'],
   headers: true,
   exposeHeaders: [],
@@ -29,3 +34,4 @@ const corsConfig = defineConfig({
 })
 
 export default corsConfig
+
