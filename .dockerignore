@@ -1,0 +1,57 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+.cache
+tmp
+temp
+*.tmp
+
+# Documentation
+README.md
+CHANGELOG.md
+*.md
+
+# Backend specific (will be copied from backend folder)
+backend/node_modules
+backend/build
+backend/tmp
+backend/.env
