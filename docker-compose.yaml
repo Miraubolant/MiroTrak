@@ -36,10 +36,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+        - VITE_API_URL=
     expose:
       - "80"
-    environment:
-      - VITE_API_URL=${VITE_API_URL:-}
     depends_on:
       backend:
         condition: service_started
