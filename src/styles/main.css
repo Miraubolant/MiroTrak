@@ -810,15 +810,21 @@ body {
 
   /* Make add button much more compact on mobile */
   .header-right > div:nth-child(2) button {
-    padding: 6px 10px;
-    font-size: 12px;
+    padding: 4px 8px;
+    font-size: 11px;
     min-width: auto;
+    gap: 4px;
+  }
+
+  .header-right > div:nth-child(2) button svg {
+    width: 16px;
+    height: 16px;
   }
 
   /* Hide "Nouveau" text on very small screens, keep only icon */
   @media (max-width: 480px) {
     .header-right > div:nth-child(2) button {
-      padding: 8px;
+      padding: 6px;
     }
 
     .header-right > div:nth-child(2) button svg:first-child {
