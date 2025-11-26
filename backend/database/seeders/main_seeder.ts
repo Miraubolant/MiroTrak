@@ -118,13 +118,18 @@ export default class extends BaseSeeder {
     )
 
     // Créer des paramètres par défaut
-    await Setting.createMany([
+    await Setting.firstOrCreate(
+      { key: 'visible_columns' },
       {
         key: 'visible_columns',
         value: JSON.stringify(['clientName', 'contactPerson', 'email', 'phone', 'projectType', 'budget']),
         type: 'json',
         description: 'Colonnes visibles dans la grille'
-      },
+      }
+    )
+
+    await Setting.firstOrCreate(
+      { key: 'custom_links' },
       {
         key: 'custom_links',
         value: JSON.stringify([
@@ -141,7 +146,11 @@ export default class extends BaseSeeder {
         ]),
         type: 'json',
         description: 'Liens personnalisés de la sidebar'
-      },
+      }
+    )
+
+    await Setting.firstOrCreate(
+      { key: 'stack_technique' },
       {
         key: 'stack_technique',
         value: JSON.stringify({
@@ -156,7 +165,11 @@ export default class extends BaseSeeder {
         }),
         type: 'json',
         description: 'Stack technique et workflow de développement'
-      },
+      }
+    )
+
+    await Setting.firstOrCreate(
+      { key: 'pdf_templates' },
       {
         key: 'pdf_templates',
         value: JSON.stringify({
@@ -285,7 +298,11 @@ Victor Mirault - MiroTrak`,
         }),
         type: 'json',
         description: 'Templates PDF personnalisables'
-      },
+      }
+    )
+
+    await Setting.firstOrCreate(
+      { key: 'email_templates' },
       {
         key: 'email_templates',
         value: JSON.stringify({
@@ -333,7 +350,7 @@ Victor Mirault`
         type: 'json',
         description: 'Templates d\'emails par type de document'
       }
-    ])
+    )
 
     // Créer les prompts par défaut
     await Prompt.createMany([
