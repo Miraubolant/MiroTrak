@@ -377,6 +377,11 @@
     margin-left: 0;
   }
 
+  /* Hide sidebar toggle button on mobile (we use hamburger instead) */
+  .sidebar-toggle {
+    display: none;
+  }
+
   /* Hamburger Menu Button */
   .mobile-menu-toggle {
     position: fixed;
