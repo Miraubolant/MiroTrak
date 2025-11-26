@@ -803,11 +803,6 @@ body {
     gap: 8px;
   }
 
-  /* Hide stats on very small screens */
-  .header-right > div:first-child {
-    display: none;
-  }
-
   /* Settings and user buttons more compact */
   .header-btn {
     padding: 6px;

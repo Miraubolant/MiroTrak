@@ -535,89 +535,91 @@ function Dashboard({ onLogout }: DashboardProps) {
           />
         </div>
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          {/* Stats rapides */}
-          <div style={{
-            display: 'flex',
-            gap: '16px',
-            alignItems: 'center',
-            paddingRight: '16px',
-            borderRight: '1px solid #21262d'
-          }}>
+          {/* Stats rapides - cachées sur mobile */}
+          {!isMobile && (
             <div style={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end'
+              gap: '16px',
+              alignItems: 'center',
+              paddingRight: '16px',
+              borderRight: '1px solid #21262d'
             }}>
               <div style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#58a6ff',
-                fontFamily: 'monospace',
-                lineHeight: 1
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end'
               }}>
-                {clients.length}
+                <div style={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  color: '#58a6ff',
+                  fontFamily: 'monospace',
+                  lineHeight: 1
+                }}>
+                  {clients.length}
+                </div>
+                <div style={{
+                  fontSize: '10px',
+                  color: '#8b949e',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Clients
+                </div>
               </div>
+
               <div style={{
-                fontSize: '10px',
-                color: '#8b949e',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end'
               }}>
-                Clients
+                <div style={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  color: '#56d364',
+                  fontFamily: 'monospace',
+                  lineHeight: 1
+                }}>
+                  {clients.reduce((sum, client) => sum + (parseFloat(client.budget as any) || 0), 0).toLocaleString('fr-FR')}€
+                </div>
+                <div style={{
+                  fontSize: '10px',
+                  color: '#8b949e',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Gain total
+                </div>
+              </div>
+
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end'
+              }}>
+                <div style={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  color: '#f78166',
+                  fontFamily: 'monospace',
+                  lineHeight: 1
+                }}>
+                  {clients.reduce((sum, client) => sum + (parseFloat(client.paid as any) || 0), 0).toLocaleString('fr-FR')}€
+                </div>
+                <div style={{
+                  fontSize: '10px',
+                  color: '#8b949e',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Abo/mois
+                </div>
               </div>
             </div>
-            
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end'
-            }}>
-              <div style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#56d364',
-                fontFamily: 'monospace',
-                lineHeight: 1
-              }}>
-                {clients.reduce((sum, client) => sum + (parseFloat(client.budget as any) || 0), 0).toLocaleString('fr-FR')}€
-              </div>
-              <div style={{
-                fontSize: '10px',
-                color: '#8b949e',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
-              }}>
-                Gain total
-              </div>
-            </div>
-            
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end'
-            }}>
-              <div style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#f78166',
-                fontFamily: 'monospace',
-                lineHeight: 1
-              }}>
-                {clients.reduce((sum, client) => sum + (parseFloat(client.paid as any) || 0), 0).toLocaleString('fr-FR')}€
-              </div>
-              <div style={{
-                fontSize: '10px',
-                color: '#8b949e',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
-              }}>
-                Abo/mois
-              </div>
-            </div>
-          </div>
+          )}
 
           <div style={{ position: 'relative' }}>
             <button
