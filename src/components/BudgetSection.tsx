@@ -141,7 +141,10 @@ function BudgetSection({ clients, isModalOpen, onOpenModal, onCloseModal }: Budg
         field: 'cost',
         headerName: 'Coût',
         width: 120,
-        valueFormatter: (params) => `${params.value?.toFixed(2)} €`,
+        valueFormatter: (params) => {
+          const value = parseFloat(params.value)
+          return !isNaN(value) ? `${value.toFixed(2)} €` : '0.00 €'
+        },
         cellStyle: { color: '#58a6ff', fontWeight: 600, textAlign: 'right' }
       },
       {
