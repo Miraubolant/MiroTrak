@@ -14,8 +14,8 @@ function Login({ onLogin }: LoginProps) {
     e.preventDefault()
     setError('')
 
-    // Compte unique : victor@mirault / Aqsze188665!
-    const VALID_EMAIL = 'victor@mirault'
+    // Compte unique : victor@mirault.com / Aqsze188665!
+    const VALID_EMAIL = 'victor@mirault.com'
     const VALID_PASSWORD = 'Aqsze188665!'
 
     if (!email || !password) {
@@ -72,7 +72,7 @@ function Login({ onLogin }: LoginProps) {
               className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="victor@mirault"
+              placeholder="victor@mirault.com"
               required
             />
           </div>
