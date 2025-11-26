@@ -2,9 +2,20 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Client from '#models/client'
 import Setting from '#models/setting'
 import Prompt from '#models/prompt'
+import User from '#models/user'
 
 export default class extends BaseSeeder {
   async run() {
+    // Créer l'utilisateur admin
+    await User.firstOrCreate(
+      { email: 'victor@mirault.com' },
+      {
+        email: 'victor@mirault.com',
+        password: 'Aqsze188665!',
+        fullName: 'Victor Mirault'
+      }
+    )
+
     // Créer le client Fun Event
     await Client.create({
       clientName: 'Fun Event',
