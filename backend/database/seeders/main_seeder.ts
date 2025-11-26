@@ -35,11 +35,11 @@ export default class extends BaseSeeder {
     )
 
     await Client.firstOrCreate(
-      { email: 'tools@miraubolant.com' },
+      { clientName: 'Tools.miraubolant.com' },
       {
         clientName: 'Tools.miraubolant.com',
         contactPerson: '3R1',
-        email: 'tools@miraubolant.com',
+        email: '',
         company: 'Tools.miraubolant.com',
         projectType: 'Suite Outils CP',
         technologies: 'React, Vite, TypeScript',
@@ -51,11 +51,11 @@ export default class extends BaseSeeder {
     )
 
     await Client.firstOrCreate(
-      { email: 'contact@miraubolant.com' },
+      { clientName: 'Miraubolant.com' },
       {
         clientName: 'Miraubolant.com',
         contactPerson: 'Victor Mirault',
-        email: 'contact@miraubolant.com',
+        email: '',
         phone: '+33 6 49 51 76 80',
         company: 'Miraubolant.com',
         projectType: 'Portfolio',
@@ -68,11 +68,11 @@ export default class extends BaseSeeder {
     )
 
     await Client.firstOrCreate(
-      { email: 'contact@vintdress.com' },
+      { clientName: 'VintDress.com' },
       {
         clientName: 'VintDress.com',
         contactPerson: 'Victor Mirault',
-        email: 'contact@vintdress.com',
+        email: '',
         phone: '+33 6 49 51 76 80',
         company: 'VintDress.com',
         projectType: 'Saas Vinted IA',
@@ -85,11 +85,11 @@ export default class extends BaseSeeder {
     )
 
     await Client.firstOrCreate(
-      { email: 'contact@miremover.fr' },
+      { clientName: 'Miremover.fr' },
       {
         clientName: 'Miremover.fr',
         contactPerson: 'Arlette',
-        email: 'contact@miremover.fr',
+        email: '',
         company: 'Miremover.fr',
         projectType: 'Saas Service Photo',
         technologies: 'React, Vite, TypeScript,Python , Bria IA',
