@@ -800,6 +800,7 @@ body {
   .header-right {
     order: 2;
     margin-left: auto;
+    gap: 8px;
   }
 
   /* Hide stats on very small screens */
@@ -807,10 +808,36 @@ body {
     display: none;
   }
 
-  /* Make add button more compact */
+  /* Make add button much more compact on mobile */
   .header-right > div:nth-child(2) button {
-    padding: 8px 12px;
-    font-size: 13px;
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: auto;
+  }
+
+  /* Hide "Nouveau" text on very small screens, keep only icon */
+  @media (max-width: 480px) {
+    .header-right > div:nth-child(2) button {
+      padding: 8px;
+    }
+
+    .header-right > div:nth-child(2) button svg:first-child {
+      margin-right: 0;
+    }
+
+    .header-right > div:nth-child(2) button svg:last-child {
+      display: none;
+    }
+  }
+
+  /* Settings and user buttons more compact */
+  .header-btn {
+    padding: 6px;
+  }
+
+  .header-btn svg {
+    width: 18px;
+    height: 18px;
   }
 
   .dashboard-main {
@@ -877,5 +904,67 @@ body {
   /* RecentActivity - stack columns on mobile */
   .recent-activity-grid {
     grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    height: auto !important;
+  }
+
+  /* Images IA section on mobile */
+  .recent-images-section {
+    max-height: 450px !important;
+    padding: 16px !important;
+  }
+
+  /* Prompts section on mobile */
+  .recent-prompts-section {
+    max-height: 350px !important;
+    padding: 16px !important;
+  }
+
+  /* Reduce grid columns for images on mobile */
+  @media (max-width: 480px) {
+    .recent-images-section {
+      padding: 12px !important;
+      max-height: 400px !important;
+    }
+
+    .recent-prompts-section {
+      padding: 12px !important;
+      max-height: 300px !important;
+    }
+
+    /* Smaller image grid on very small screens */
+    .recent-images-section > div:last-child {
+      grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)) !important;
+      gap: 8px !important;
+    }
+
+    /* Smaller headings */
+    .recent-images-section h3,
+    .recent-prompts-section h3 {
+      font-size: 14px !important;
+    }
+
+    /* Smaller badge */
+    .recent-images-section span,
+    .recent-prompts-section span {
+      font-size: 11px !important;
+      padding: 3px 8px !important;
+    }
+  }
+
+  /* Dashboard grid - adjust height on mobile */
+  .dashboard-grid {
+    height: auto !important;
+  }
+
+  /* Add button dropdown menu on mobile */
+  .header-right > div:nth-child(2) > div {
+    min-width: 180px !important;
+    right: 0 !important;
+  }
+
+  /* Budget section on mobile */
+  .dashboard-grid > div {
+    height: auto !important;
   }
 }

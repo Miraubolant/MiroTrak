@@ -75,7 +75,7 @@ function RecentActivity({ onOpenAiImage, onOpenPrompt, refreshTrigger }: RecentA
       height: '100%'
     }}>
       {/* Section Images IA */}
-      <div style={{
+      <div className="recent-images-section" style={{
         background: 'linear-gradient(135deg, #161b22 0%, #1c2128 100%)',
         border: '1px solid #30363d',
         borderRadius: '12px',
@@ -229,7 +229,7 @@ function RecentActivity({ onOpenAiImage, onOpenPrompt, refreshTrigger }: RecentA
         </div>
 
       {/* Section Prompts */}
-      <div style={{
+      <div className="recent-prompts-section" style={{
         background: 'linear-gradient(135deg, #161b22 0%, #1c2128 100%)',
         border: '1px solid #30363d',
         borderRadius: '12px',
