@@ -14,11 +14,22 @@ function RecentActivity({ onOpenAiImage, onOpenPrompt, refreshTrigger }: RecentA
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(true)
   const [isLoadingPrompts, setIsLoadingPrompts] = useState(true)
   const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Détecter si on est sur mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     loadRecentPhotos()
     loadRecentPrompts()
-  }, [])
+  }, [isMobile])
 
   // Rafraîchir quand refreshTrigger change
   useEffect(() => {
@@ -32,8 +43,9 @@ function RecentActivity({ onOpenAiImage, onOpenPrompt, refreshTrigger }: RecentA
     try {
       setIsLoadingPhotos(true)
       const photos = await aiPhotosAPI.getAll()
-      // Afficher toutes les images disponibles
-      setRecentPhotos(photos)
+      // Limiter à 10 images sur mobile, afficher toutes sur desktop
+      const photosToShow = isMobile ? photos.slice(0, 10) : photos
+      setRecentPhotos(photosToShow)
     } catch (error) {
       console.error('Erreur lors du chargement des photos:', error)
     } finally {
@@ -55,7 +67,7 @@ function RecentActivity({ onOpenAiImage, onOpenPrompt, refreshTrigger }: RecentA
   }
 
   return (
-    <div style={{ 
+    <div className="recent-activity-grid" style={{
       marginBottom: '32px',
       display: 'grid',
       gridTemplateColumns: '2fr 1fr',

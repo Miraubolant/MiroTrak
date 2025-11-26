@@ -62,6 +62,7 @@ function Dashboard({ onLogout }: DashboardProps) {
   ])
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [username, setUsername] = useState('Victor Mirault')
   const [visibleColumns, setVisibleColumns] = useState<string[]>([
     'clientName',
     'contactPerson',
@@ -181,7 +182,7 @@ function Dashboard({ onLogout }: DashboardProps) {
     const loadSettings = async () => {
       try {
         const settings = await settingsAPI.getAll()
-        
+
         // Charger les colonnes visibles
         const visibleColumnsSetting = settings.find(s => s.key === 'visible_columns')
         if (visibleColumnsSetting) {
@@ -200,6 +201,12 @@ function Dashboard({ onLogout }: DashboardProps) {
         const stackSetting = settings.find(s => s.key === 'stack_technique')
         if (stackSetting) {
           setStackTechnique(JSON.parse(stackSetting.value))
+        }
+
+        // Charger le nom d'utilisateur
+        const usernameSetting = settings.find(s => s.key === 'username')
+        if (usernameSetting) {
+          setUsername(usernameSetting.value)
         }
       } catch (error) {
         console.error('Erreur lors du chargement des paramètres:', error)
@@ -777,7 +784,7 @@ function Dashboard({ onLogout }: DashboardProps) {
                     </svg>
                   </div>
                   <div className="user-info">
-                    <div className="user-name">Victor Mirault</div>
+                    <div className="user-name">{username}</div>
                     <div className="user-email">contact@mirotrak.com</div>
                   </div>
                 </div>
@@ -829,7 +836,7 @@ function Dashboard({ onLogout }: DashboardProps) {
           {/* Grille: Abonnements + Activité Récente | Calendrier */}
           {(isCalendarVisible || isBudgetVisible) && (
             <div style={{ marginBottom: '32px' }}>
-              <div style={{
+              <div className="dashboard-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: isCalendarVisible && isBudgetVisible ? '1fr 1fr' : '1fr',
                 gap: '24px',
@@ -949,6 +956,7 @@ function Dashboard({ onLogout }: DashboardProps) {
           setIsProfileOpen(false)
           setIsStackTechniqueOpen(true)
         }}
+        onUsernameUpdate={(newUsername) => setUsername(newUsername)}
       />
 
       {/* Bibliothèque de Prompts en Modal */}

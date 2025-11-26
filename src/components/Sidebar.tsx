@@ -18,6 +18,7 @@ interface SidebarProps {
 
 function Sidebar({ customLinks, onToggle, onOpenPromptsLibrary, onOpenAiImagesLibrary }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('sidebar-expanded-categories')
     return saved ? new Set(JSON.parse(saved)) : new Set()
@@ -49,6 +50,8 @@ function Sidebar({ customLinks, onToggle, onOpenPromptsLibrary, onOpenAiImagesLi
 
   const handleLinkClick = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer')
+    // Close mobile menu on link click
+    setIsMobileOpen(false)
   }
 
   const toggleCategory = (category: string) => {
@@ -75,7 +78,37 @@ function Sidebar({ customLinks, onToggle, onOpenPromptsLibrary, onOpenAiImagesLi
   }, {} as Record<string, CustomLink[]>)
 
   return (
-    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <>
+      {/* Mobile Menu Toggle Button */}
+      <button
+        className="mobile-menu-toggle"
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        aria-label="Toggle menu"
+        style={{ display: 'none' }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          {isMobileOpen ? (
+            <>
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </>
+          ) : (
+            <>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </>
+          )}
+        </svg>
+      </button>
+
+      {/* Mobile Overlay */}
+      <div
+        className={`mobile-sidebar-overlay ${isMobileOpen ? 'active' : ''}`}
+        onClick={() => setIsMobileOpen(false)}
+      />
+
+      <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'mobile-open' : ''}`}>
       <button
         className="sidebar-toggle"
         onClick={handleToggle}
@@ -192,6 +225,7 @@ function Sidebar({ customLinks, onToggle, onOpenPromptsLibrary, onOpenAiImagesLi
         </div>
       </div>
     </aside>
+    </>
   )
 }
 

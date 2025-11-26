@@ -1,18 +1,40 @@
 import { useState, useEffect } from 'react'
+import { settingsAPI } from '../services/api'
+import toast from 'react-hot-toast'
 import '../styles/modal.css'
 
 interface ProfileModalProps {
   isOpen: boolean
   onClose: () => void
   onOpenStackTechnique?: () => void
+  onUsernameUpdate?: (username: string) => void
 }
 
-function ProfileModal({ isOpen, onClose, onOpenStackTechnique }: ProfileModalProps) {
+function ProfileModal({ isOpen, onClose, onOpenStackTechnique, onUsernameUpdate }: ProfileModalProps) {
   const [username, setUsername] = useState('Victor Mirault')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [profilePhoto, setProfilePhoto] = useState('')
+
+  // Charger le nom d'utilisateur depuis l'API au montage
+  useEffect(() => {
+    const loadUsername = async () => {
+      try {
+        const settings = await settingsAPI.getAll()
+        const usernameSetting = settings.find(s => s.key === 'username')
+        if (usernameSetting) {
+          setUsername(usernameSetting.value)
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement du nom d\'utilisateur:', error)
+      }
+    }
+
+    if (isOpen) {
+      loadUsername()
+    }
+  }, [isOpen])
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -26,18 +48,38 @@ function ProfileModal({ isOpen, onClose, onOpenStackTechnique }: ProfileModalPro
     }
   }
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (newPassword && newPassword !== confirmPassword) {
+      toast.error('Les mots de passe ne correspondent pas')
       return
     }
 
-    // Ici on pourrait sauvegarder dans l'API
-    setCurrentPassword('')
-    setNewPassword('')
-    setConfirmPassword('')
-    onClose()
+    try {
+      // Sauvegarder le nom d'utilisateur dans l'API
+      await settingsAPI.save({
+        key: 'username',
+        value: username,
+        type: 'string',
+        description: 'Nom d\'utilisateur du profil'
+      })
+
+      toast.success('Profil mis à jour avec succès')
+
+      // Notifier le parent du changement de username
+      if (onUsernameUpdate) {
+        onUsernameUpdate(username)
+      }
+
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      onClose()
+    } catch (error) {
+      toast.error('Erreur lors de la sauvegarde du profil')
+      console.error('Erreur lors de la sauvegarde:', error)
+    }
   }
 
   useEffect(() => {
