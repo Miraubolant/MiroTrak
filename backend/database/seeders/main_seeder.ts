@@ -16,25 +16,106 @@ export default class extends BaseSeeder {
       }
     )
 
-    // Créer le client Fun Event
-    await Client.create({
-      clientName: 'Fun Event',
-      contactPerson: 'Victor Mirault',
-      email: 'contact@funevent.fr',
-      phone: '+33 6 12 34 56 78',
-      company: 'Fun Event',
-      address: '12 Rue de la Fête',
-      city: 'Paris',
-      postalCode: '75001',
-      country: 'France',
-      projectType: 'Site Vitrine',
-      technologies: 'React, Vite, TypeScript',
-      budget: 400,
-      status: 'En cours',
-      progress: 15,
-      notes: 'Site vitrine pour événements festifs',
-      website: 'https://funevent.fr'
-    })
+    // Créer les clients
+    await Client.firstOrCreate(
+      { email: 'mariejobard84@gmail.com' },
+      {
+        clientName: 'Marie Jobard',
+        contactPerson: 'Marie Jobard',
+        email: 'mariejobard84@gmail.com',
+        phone: '+33 6 58 75 69 09',
+        company: 'Marie Jobard',
+        projectType: 'Site Vitrine',
+        technologies: 'React, Vite, TypeScript, Adonis',
+        budget: 800,
+        status: 'En attente',
+        progress: 0,
+        website: ''
+      }
+    )
+
+    await Client.firstOrCreate(
+      { email: '3R1' },
+      {
+        clientName: 'Tools.miraubolant.com',
+        contactPerson: '3R1',
+        email: '',
+        company: 'Tools.miraubolant.com',
+        projectType: 'Suite Outils CP',
+        technologies: 'React, Vite, TypeScript',
+        budget: 0,
+        status: 'Terminé',
+        progress: 100,
+        website: ''
+      }
+    )
+
+    await Client.firstOrCreate(
+      { email: 'miraubolant.com' },
+      {
+        clientName: 'Miraubolant.com',
+        contactPerson: 'Victor Mirault',
+        email: '',
+        phone: '+33 6 49 51 76 80',
+        company: 'Miraubolant.com',
+        projectType: 'Portfolio',
+        technologies: 'React, Vite, TypeScript',
+        budget: 0,
+        status: 'En attente',
+        progress: 0,
+        website: ''
+      }
+    )
+
+    await Client.firstOrCreate(
+      { email: 'vintdress.com' },
+      {
+        clientName: 'VintDress.com',
+        contactPerson: 'Victor Mirault',
+        email: '',
+        phone: '+33 6 49 51 76 80',
+        company: 'VintDress.com',
+        projectType: 'Saas Vinted IA',
+        technologies: 'React, Vite, TypeScript',
+        budget: 0,
+        status: 'En attente',
+        progress: 0,
+        website: ''
+      }
+    )
+
+    await Client.firstOrCreate(
+      { email: 'miremover.fr' },
+      {
+        clientName: 'Miremover.fr',
+        contactPerson: 'Arlette',
+        email: '',
+        company: 'Miremover.fr',
+        projectType: 'Saas Service Photo',
+        technologies: 'React, Vite, TypeScript,Python , Bria IA',
+        budget: 0,
+        status: 'En attente',
+        progress: 0,
+        website: ''
+      }
+    )
+
+    await Client.firstOrCreate(
+      { email: 'nassiri.merwan@outlook.fr' },
+      {
+        clientName: 'Fun-Event.com',
+        contactPerson: 'Merwan Nassiri',
+        email: 'nassiri.merwan@outlook.fr',
+        phone: '+33 7 63 56 20 61',
+        company: 'Fun-Event.com',
+        projectType: 'Site Vitrine',
+        technologies: 'React, Vite, TypeScript',
+        budget: 400,
+        status: 'En cours',
+        progress: 50,
+        website: ''
+      }
+    )
 
     // Créer des paramètres par défaut
     await Setting.createMany([
