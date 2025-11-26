@@ -808,38 +808,6 @@ body {
     display: none;
   }
 
-  /* Make add button show only "+" icon on mobile */
-  .header-right > div:nth-child(2) button {
-    padding: 6px;
-    font-size: 11px;
-    min-width: auto;
-    gap: 0;
-  }
-
-  .header-right > div:nth-child(2) button svg {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-  }
-
-  /* Hide "Nouveau" text and dropdown arrow on mobile */
-  .header-right > div:nth-child(2) button svg:first-child {
-    margin-right: 0;
-  }
-
-  .header-right > div:nth-child(2) button svg:last-child {
-    display: none;
-  }
-
-  /* Also hide text nodes (not just SVG) */
-  .header-right > div:nth-child(2) button {
-    font-size: 0;
-  }
-
-  .header-right > div:nth-child(2) button svg {
-    font-size: initial;
-  }
-
   /* Settings and user buttons more compact */
   .header-btn {
     padding: 6px;

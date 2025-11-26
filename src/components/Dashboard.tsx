@@ -63,6 +63,7 @@ function Dashboard({ onLogout }: DashboardProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [username, setUsername] = useState('Victor Mirault')
+  const [isMobile, setIsMobile] = useState(false)
   const [visibleColumns, setVisibleColumns] = useState<string[]>([
     'clientName',
     'contactPerson',
@@ -281,6 +282,16 @@ function Dashboard({ onLogout }: DashboardProps) {
       console.error('Erreur lors de la sauvegarde de la stack technique:', error)
     }
   }
+
+  // Détecter si on est sur mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Raccourcis clavier
   useEffect(() => {
@@ -615,13 +626,13 @@ function Dashboard({ onLogout }: DashboardProps) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '8px 16px',
+                gap: isMobile ? '0' : '8px',
+                padding: isMobile ? '8px' : '8px 16px',
                 background: '#21262d',
                 border: '1px solid #30363d',
                 borderRadius: '6px',
                 color: '#e6edf3',
-                fontSize: '14px',
+                fontSize: isMobile ? '0' : '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
@@ -640,14 +651,16 @@ function Dashboard({ onLogout }: DashboardProps) {
                 e.currentTarget.style.borderColor = '#30363d'
               }}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '18px', height: '18px' }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: isMobile ? '20px' : '18px', height: isMobile ? '20px' : '18px' }}>
                 <line x1="12" y1="5" x2="12" y2="19"/>
                 <line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
-              Nouveau
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px', transition: 'transform 0.2s', transform: isAddMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
+              {!isMobile && "Nouveau"}
+              {!isMobile && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px', transition: 'transform 0.2s', transform: isAddMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              )}
             </button>
             {isAddMenuOpen && (
               <div style={{
