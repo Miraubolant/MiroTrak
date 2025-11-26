@@ -1,4 +1,5 @@
 import { useState, FormEvent } from 'react'
+import { authAPI } from '../services/api'
 import '../styles/login.css'
 
 interface LoginProps {
@@ -9,26 +10,38 @@ function Login({ onLogin }: LoginProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
-
-    // Compte unique : victor@mirault.com / Aqsze188665!
-    const VALID_EMAIL = 'victor@mirault.com'
-    const VALID_PASSWORD = 'Aqsze188665!'
+    setLoading(true)
 
     if (!email || !password) {
       setError('Veuillez remplir tous les champs')
+      setLoading(false)
       return
     }
 
-    if (email !== VALID_EMAIL || password !== VALID_PASSWORD) {
-      setError('Email ou mot de passe incorrect')
-      return
-    }
+    try {
+      const response = await authAPI.login(email, password)
 
-    onLogin(email)
+      // Stocker le token dans localStorage
+      if (response.token) {
+        localStorage.setItem('auth_token', response.token)
+      }
+
+      // Appeler onLogin avec l'email de l'utilisateur
+      onLogin(response.user.email)
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        setError(err.response.data.error)
+      } else {
+        setError('Une erreur est survenue lors de la connexion')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -90,8 +103,8 @@ function Login({ onLogin }: LoginProps) {
             />
           </div>
 
-          <button type="submit" className="btn-login">
-            Se connecter
+          <button type="submit" className="btn-login" disabled={loading}>
+            {loading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>
 

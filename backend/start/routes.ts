@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import { throttle, throttleWrite, throttleHeavy } from '#start/limiter'
 
+const AuthController = () => import('#controllers/auth_controller')
 const ClientsController = () => import('#controllers/clients_controller')
 const SettingsController = () => import('#controllers/settings_controller')
 const TemplatesController = () => import('#controllers/templates_controller')
@@ -33,6 +34,13 @@ router.get('/api/health', async () => {
     timestamp: new Date().toISOString()
   }
 })
+
+// Routes d'authentification
+router.group(() => {
+  router.post('/login', [AuthController, 'login']).use(throttleWrite)
+  router.post('/logout', [AuthController, 'logout']).use(throttleWrite)
+  router.get('/me', [AuthController, 'me']).use(throttle)
+}).prefix('/api/auth')
 
 // Routes pour les clients
 router.group(() => {

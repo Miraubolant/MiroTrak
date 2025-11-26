@@ -365,4 +365,33 @@ export const eventsAPI = {
   },
 }
 
+// API pour l'authentification
+export interface AuthResponse {
+  user: {
+    id: number
+    email: string
+    fullName: string | null
+  }
+  token: string
+}
+
+export const authAPI = {
+  // Login
+  login: async (email: string, password: string): Promise<AuthResponse> => {
+    const response = await api.post('/api/auth/login', { email, password })
+    return response.data
+  },
+
+  // Logout
+  logout: async (): Promise<void> => {
+    await api.post('/api/auth/logout')
+  },
+
+  // Get current user
+  me: async (): Promise<{ user: AuthResponse['user'] }> => {
+    const response = await api.get('/api/auth/me')
+    return response.data
+  },
+}
+
 export default api
