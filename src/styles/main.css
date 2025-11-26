@@ -795,6 +795,9 @@ body {
     width: 100%;
     max-width: 100%;
     margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .header-right {
@@ -939,5 +942,62 @@ body {
   /* Budget section on mobile */
   .dashboard-grid > div {
     height: auto !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Center grid content on mobile */
+  .recent-activity-grid,
+  .dashboard-grid > div {
+    justify-items: center;
+  }
+
+  /* Make tables scrollable horizontally on mobile */
+  .ag-theme-quartz {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure table container doesn't overflow */
+  .ag-theme-quartz .ag-root-wrapper {
+    min-width: 100%;
+  }
+
+  /* PromptsLibrary responsive - single column grid on mobile */
+  .prompts-library-grid,
+  div[style*="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Mobile-specific styles for smaller screens */
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 10px 12px;
+    padding-left: 60px;
+  }
+
+  .header-center {
+    margin-top: 6px;
+  }
+
+  .search-bar {
+    padding: 6px 10px;
+  }
+
+  .search-bar input {
+    font-size: 13px;
+  }
+
+  .dashboard-main {
+    padding: 12px;
+  }
+
+  /* PromptsLibrary - reduce padding on very small screens */
+  .prompts-library-grid > div {
+    padding: 12px !important;
   }
 }
