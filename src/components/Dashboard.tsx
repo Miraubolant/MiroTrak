@@ -626,17 +626,19 @@ function Dashboard({ onLogout }: DashboardProps) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: isMobile ? '0' : '8px',
-                padding: isMobile ? '8px' : '8px 16px',
+                padding: isMobile ? '10px' : '8px 16px',
                 background: '#21262d',
                 border: '1px solid #30363d',
                 borderRadius: '6px',
                 color: '#e6edf3',
-                fontSize: isMobile ? '0' : '14px',
+                fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                boxShadow: '0 0 0 0 rgba(48, 54, 61, 0)'
+                boxShadow: '0 0 0 0 rgba(48, 54, 61, 0)',
+                minWidth: isMobile ? '40px' : 'auto'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-1px)'
@@ -651,15 +653,22 @@ function Dashboard({ onLogout }: DashboardProps) {
                 e.currentTarget.style.borderColor = '#30363d'
               }}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: isMobile ? '20px' : '18px', height: isMobile ? '20px' : '18px' }}>
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
-              </svg>
-              {!isMobile && "Nouveau"}
-              {!isMobile && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px', transition: 'transform 0.2s', transform: isAddMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                  <polyline points="6 9 12 15 18 9"/>
+              {isMobile ? (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '20px', height: '20px' }}>
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
+              ) : (
+                <>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '18px', height: '18px' }}>
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Nouveau
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '16px', height: '16px', transition: 'transform 0.2s', transform: isAddMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </>
               )}
             </button>
             {isAddMenuOpen && (
